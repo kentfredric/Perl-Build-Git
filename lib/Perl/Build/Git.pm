@@ -23,13 +23,13 @@ sub perl_git_src_uri { 'git://perl5.git.perl.org/perl.git' }
 sub _extract_config {
   my ( $class, $args ) = @_;
 
-  croak('cache_root required') unless exists $args{cache_root};
-  croak('git_root required')   unless exists $args{git_root};
+  croak('cache_root required') unless exists $args->{cache_root};
+  croak('git_root required')   unless exists $args->{git_root};
 
   my $config = {
-    cache_root => path( delete $args{cache_root} )->absolute,
-    git_root   => path( delete $args{git_root} )->absolute,
-    persistent => ( exists $args{persistent} ? !!delete $args{persistent} : undef ),
+    cache_root => path( delete $args->{cache_root} )->absolute,
+    git_root   => path( delete $args->{git_root} )->absolute,
+    persistent => ( exists $args->{persistent} ? !!delete $args->{persistent} : undef ),
   };
 
   # Define <describe>
