@@ -11,7 +11,7 @@ BEGIN {
 
 # ABSTRACT: Convenience extensions for Perl::Build for bulk git work
 
-use Perl::Build 0.15;
+use Perl::Build 0.17;
 use Perl::Build::Built;
 use parent 'Perl::Build';
 use Path::Tiny qw( path );
