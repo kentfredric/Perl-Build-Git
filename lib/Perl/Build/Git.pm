@@ -26,7 +26,7 @@ sub _extract_config {
   croak('cache_root required') unless exists $args->{cache_root};
   croak('git_root required')   unless exists $args->{git_root};
 
-  my $config = {
+  my ( $config ) = {
     cache_root => path( delete $args->{cache_root} )->absolute,
     git_root   => path( delete $args->{git_root} )->absolute,
     persistent => ( exists $args->{persistent} ? !!delete $args->{persistent} : undef ),
