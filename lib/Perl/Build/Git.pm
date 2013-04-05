@@ -11,7 +11,8 @@ BEGIN {
 
 # ABSTRACT: Convenience extensions for Perl::Build for bulk git work
 
-use Perl::Build;
+use Perl::Build 0.15;
+use Perl::Build::Built;
 use parent 'Perl::Build';
 use Path::Tiny qw( path );
 use Carp qw( croak );
@@ -31,40 +32,52 @@ sub _extract_config {
     persistent => ( exists $args{persistent} ? !!delete $args{persistent} : undef ),
   };
 
+  # Define <describe>
   {
     require Git::Wrapper;
     $config->{describe} = [ Git::Wrapper->new( $config->{git_root} )->describe ]->[0];
   }
 
-  if ( !$config->{persistent} ) {
+  # Define <dst_dir> and <tmp_dir>
+  if ( $config->{persistent} ) {
+    $config->{dst_dir} = $config->{cache_root}->child( $config->{describe} )->absolute;
+  } else {
     $config->{tmp_dir} = File::Temp->newdir(
       $config->{describe} . 'XXXX',
       DIR     => $config->{cache_root}->stringify,
       CLEANUP => 1,
     );
+    $config->{dst_dir} = path( $config->{tmp_dir}->dirname )->absolute
   }
-  return ( $config, $args );
-}
 
-sub _compute_args {
-  my ( $class, $config ) = @_;
-  return {
-    src_dir => $config->{git_root}->stringify,
-    dst_dir => (
-        $config->{persistent}
-      ? $config->{cache_root}->child( $config->{describe} )
-      : path( $config->{tmp_dir}->dirname )->absolute->stringify
-    )
-  };
+  # Define <success_file>
+  $config->{success_file} => $config->{dst_dir}->child('.success');
+
+  return ( $config, $args );
 }
 
 sub install_git {
   my ( $class, %args ) = @_;
 
   my ( $config, $user_args ) = $class->_extract_config( \%args );
-  my ( $computed_args, ) = $class->_compute_args($config);
 
-  return $class->install( %{$computed_args}, %{$user_args} );
+  my $computed_args =  {
+    src_dir => $config->{git_root}->stringify,
+    dst_dir => $config->{dst_dir}->stringify;
+  };
+
+  if ( $config->{success_file}->is_file ) {
+      # Existing success!, don't build.
+      return Perl::Build::Built->new(
+          installed_path => $computed_args->{dst_dir}->stringify
+      );
+  }
+
+  my $build = $class->install( %{$computed_args}, %{$user_args} );
+
+  $config->{success_file}->touch;
+
+  return $build;
 }
 
 1;
