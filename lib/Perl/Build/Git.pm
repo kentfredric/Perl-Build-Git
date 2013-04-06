@@ -242,7 +242,7 @@ where color_spec is anything that L<C<Term::ANSIColor::colored>|Term::ANSIColor:
 
 Default implementation writes to C<log_output> formatting C<@message> via C<Term::ANSIColor>.
 
-=back 4
+=back
 
 =head1 AUTHOR
 
