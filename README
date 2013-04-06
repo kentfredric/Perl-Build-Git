@@ -69,13 +69,17 @@ METHODS
 
     *   "git_root"
 
-        path. this should be a path to an existing "perl" "git" checkout.
+        path.
+
+        This should be a path to an existing "perl" "git" checkout.
 
     *   "persistent"
 
-        "bool". Whether to make the build directory persistent or not.
-        Persistent directories can be optimistically re-used, while
-        non-persistent ones can not.
+        "bool".
+
+        Whether to make the build directory persistent or not. Persistent
+        directories can be optimistically re-used, while non-persistent ones
+        can not.
 
         Non Persistent directories also have a random component added to
         their path, and implied cleanup on exit.
@@ -84,8 +88,9 @@ METHODS
 
     *   "preclean"
 
-        "bool". Whether to execute a pre-build cleanup of the git working
-        directory.
+        "bool".
+
+        Whether to execute a pre-build cleanup of the git working directory.
 
         This at present executes a mash of "git checkout", "git reset" and
         "git clean".
@@ -94,7 +99,9 @@ METHODS
 
     *   "quiet"
 
-        "bool". If specified, the default method for "log" is a no-op.
+        "bool".
+
+        If specified, the default method for "log" is a no-op.
 
         The default is NOT QUIET
 
