@@ -18,7 +18,7 @@ use Path::Tiny qw( path );
 use Carp qw( croak );
 
 
-sub _perl_git_src_uri { 'git://perl5.git.perl.org/perl.git' }
+sub _perl_git_src_uri { return 'git://perl5.git.perl.org/perl.git' }
 
 sub _extract_config {
   my ( $class, $args ) = @_;
@@ -57,7 +57,7 @@ sub _extract_config {
   {
     require Git::Wrapper;
     $config->{describe} = [ $config->{git}->describe ]->[0];
-    $config->{log}->( [ 'red' ], 'Building ' . $config->{describe} );
+    $config->{log}->( ['red'], 'Building ' . $config->{describe} );
   }
 
   # Define <dst_dir> and <tmp_dir>
@@ -72,14 +72,13 @@ sub _extract_config {
     );
     $config->{dst_dir} = path( $config->{tmp_dir}->dirname )->absolute;
   }
-  $config->{log}->( ['red' ], 'Building in ' . $config->{dst_dir} );
+  $config->{log}->( ['red'], 'Building in ' . $config->{dst_dir} );
 
   # Define <success_file>
   $config->{success_file} = $config->{dst_dir}->child('.success');
 
   return ( $config, $args );
 }
-
 
 
 sub install_git {
@@ -95,7 +94,7 @@ sub install_git {
   if ( $config->{success_file}->is_file ) {
 
     # Existing success!, don't build.
-    $config->{log}->(['green'], "This version already built");
+    $config->{log}->( ['green'], "This version already built" );
     return Perl::Build::Built->new(
       {
         installed_path => $computed_args->{dst_path}
@@ -104,21 +103,21 @@ sub install_git {
   }
 
   if ( $config->{preclean} ) {
-    $config->{log}->(['red'], 'Executing preclean' );
+    $config->{log}->( ['red'], 'Executing preclean' );
     for my $line ( $config->{git}->checkout( '--', '.' ) ) {
-        $config->{log}->(['green'],"checkout:$line");
+      $config->{log}->( ['green'], "checkout:$line" );
     }
     for my $line ( $config->{git}->reset('--hard') ) {
-      $config->{log}->(['green'],"reset:$line");
+      $config->{log}->( ['green'], "reset:$line" );
     }
     for my $line ( $config->{git}->clean('-fxd') ) {
-      $config->{log}->(['green'],"clean:$line");
+      $config->{log}->( ['green'], "clean:$line" );
     }
   }
 
   my $build = $class->install( %{$computed_args}, %{$user_args} );
 
-  $config->{log}->(['green'], 'Build Success, marking successful');
+  $config->{log}->( ['green'], 'Build Success, marking successful' );
   $config->{success_file}->touch;
 
   return $build;
@@ -169,7 +168,7 @@ C<persistent = 1>  is intended to give each build its own unique directory, such
 
     /tmp/perls/v5.17.10-44-g97927b0/
 
-So that if you do multiple bisects, ( for the purpose of testing which incarnation of perl some module fails in ), testing against a perl that was previously tested against in a previous bisect should return a cached result, greatly speeding up the bisect ( at the expense of disk space ).
+So that if you do multiple bisects, ( for the purpose of testing which incarnation of C<perl> some module fails in ), testing against a C<perl> that was previously tested against in a previous bisect should return a cached result, greatly speeding up the bisect ( at the expense of disk space ).
 
 =head1 METHODS
 
@@ -189,7 +188,7 @@ So that if you do multiple bisects, ( for the purpose of testing which incarnati
 
 =item * C<cache_root>
 
-B<path>. This should be a path to an existent base working directory to install multiple perl installs to
+B<path>. This should be a path to an existent base working directory to install multiple C<perl> installs to
 
 Perl builds will either be in the form of
 
@@ -207,7 +206,7 @@ B<path>. this should be a path to an existing C<perl> C<git> checkout.
 
 =item * C<persistent>
 
-B<bool>. Wether to make the build directory persistent or not. Persistent directories can be optimistially re-used, while non-persistent ones can not.
+B<C<bool>>. Whether to make the build directory persistent or not. Persistent directories can be optimistially re-used, while non-persistent ones can not.
 
 Non Persistent directories also have a random component added to their path, and implied cleanup on exit.
 
@@ -215,7 +214,7 @@ Default is B<NOT PERSISTENT>
 
 =item * C<preclean>
 
-B<bool>. Wether to execute a pre-build cleanup of the git working directory.
+B<C<bool>>. Wether to execute a pre-build cleanup of the git working directory.
 
 This at present executes a mash of C<git checkout>, C<git reset> and C<git clean>.
 
@@ -223,7 +222,7 @@ Default is B<PRECLEAN GIT TREE>
 
 =item * C<quiet>
 
-B<bool>. If specified, the default method for C<log> is a no-op.
+B<C<bool>>. If specified, the default method for C<log> is a no-op.
 
 The default is B<NOT QUIET>
 
