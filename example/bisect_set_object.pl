@@ -45,31 +45,28 @@ use Cwd qw( cwd );
 # I can also do a successive repeat of this same bisect procedure now without incurring the need to build all the above perls.
 #
 
-
-
 use Perl::Build::Git;
 
 my $man         = [qw( man1dir man3dir siteman1dir siteman3dir  )];
 my $no_man_opts = [ map { '-D' . $_ . '=none' } @{$man} ];
 my $result      = Perl::Build::Git->install_git(
-    preclean          => 1,
-    persistent        => 1,
-    git_root          => '/home/kent/perl/perl',
-    cache_root        => '/tmp/xbuild',
-    configure_options => [
-        '-de',               # quiet automatic
-        '-Dusedevel',        # "yes, ok, its a development version"
-        @{$no_man_opts},     # man pages are ugly
-        '-U versiononly',    # use bin/perl, not bin/perl5.17.1
-    ],
+  preclean          => 1,
+  persistent        => 1,
+  git_root          => '/home/kent/perl/perl',
+  cache_root        => '/tmp/xbuild',
+  configure_options => [
+    '-de',               # quiet automatic
+    '-Dusedevel',        # "yes, ok, its a development version"
+    @{$no_man_opts},     # man pages are ugly
+    '-U versiononly',    # use bin/perl, not bin/perl5.17.1
+  ],
 );
 my $test_file = {
-    store_at => '/tmp/Set-Object-1.29.tar.gz',
-    src_uri =>
-      'http://cpan.metacpan.org/authors/id/S/SA/SAMV/Set-Object-1.29.tar.gz',
+  store_at => '/tmp/Set-Object-1.29.tar.gz',
+  src_uri  => 'http://cpan.metacpan.org/authors/id/S/SA/SAMV/Set-Object-1.29.tar.gz',
 };
 if ( not -e $test_file->{store_at} ) {
-    system( 'wget', '-O', $test_file->{store_at}, $test_file->{src_uri} );
+  system( 'wget', '-O', $test_file->{store_at}, $test_file->{src_uri} );
 }
 
 my $expect_fail = 1;
@@ -77,74 +74,71 @@ my $expect_fail = 1;
 my $cwd = cwd();
 
 $result->run_env(
-    sub {
-        my $cpanm = $result->bin_path . '/cpanm';
-        if ( not -e $cpanm ) {
-            system('curl -L http://cpanmin.us | perl - App::cpanminus');
-        }
-        my $tmpdir = File::Temp->newdir();
-
-        safe_system_tool( 'cpanm', '-v', '--notest', '--installdeps',
-            $test_file->{store_at} );
-
-        chdir( $tmpdir->dirname );
-        safe_system_tool( 'tar', '-xf', $test_file->{store_at},
-            '--strip-components=1' );
-        safe_system_tool( 'perl', './Makefile.PL' );
-        safe_system_tool('make');
-        safe_system_target( 'prove', '-bvr', 't/object/union.t' );
+  sub {
+    my $cpanm = $result->bin_path . '/cpanm';
+    if ( not -e $cpanm ) {
+      system('curl -L http://cpanmin.us | perl - App::cpanminus');
     }
+    my $tmpdir = File::Temp->newdir();
+
+    safe_system_tool( 'cpanm', '-v', '--notest', '--installdeps', $test_file->{store_at} );
+
+    chdir( $tmpdir->dirname );
+    safe_system_tool( 'tar', '-xf', $test_file->{store_at}, '--strip-components=1' );
+    safe_system_tool( 'perl', './Makefile.PL' );
+    safe_system_tool('make');
+    safe_system_target( 'prove', '-bvr', 't/object/union.t' );
+  }
 );
 
 target_success();
 
 sub tooling_error {
-    *STDERR->print("\e[34m tooling error\e[0m\n");
-    chdir($cwd);
-    if ($expect_fail) {
-        exit 1;
-    }
-    exit 0;
+  *STDERR->print("\e[34m tooling error\e[0m\n");
+  chdir($cwd);
+  if ($expect_fail) {
+    exit 1;
+  }
+  exit 0;
 }
 
 sub target_error {
-    *STDERR->print("\e[34m target error\e[0m\n");
-    chdir($cwd);
-    if ($expect_fail) {
-        exit 0;
-    }
-    exit 1;
+  *STDERR->print("\e[34m target error\e[0m\n");
+  chdir($cwd);
+  if ($expect_fail) {
+    exit 0;
+  }
+  exit 1;
 }
 
 sub target_success {
-    *STDERR->print("\e[34m target success\e[0m\n");
+  *STDERR->print("\e[34m target success\e[0m\n");
 
-    chdir($cwd);
-    if ($expect_fail) {
-        exit 1;
-    }
-    exit 0;
+  chdir($cwd);
+  if ($expect_fail) {
+    exit 1;
+  }
+  exit 0;
 }
 
 sub safe_system_tool {
-    my (@args) = @_;
-    *STDERR->print("\e[31m@args\e[0m\n");
-    my $result = system(@args);
-    if ($result) {
-        *STDERR->print("\e[33m non-zero exit = $result\e[0m\n");
-        tooling_error;
-    }
+  my (@args) = @_;
+  *STDERR->print("\e[31m@args\e[0m\n");
+  my $result = system(@args);
+  if ($result) {
+    *STDERR->print("\e[33m non-zero exit = $result\e[0m\n");
+    tooling_error;
+  }
 }
 
 sub safe_system_target {
-    my (@args) = @_;
-    *STDERR->print("\e[31m@args\e[0m\n");
-    my $result = system(@args);
-    if ($result) {
-        *STDERR->print("\e[33m non-zero exit = $result\e[0m\n");
-        target_error;
-    }
-    target_success;
+  my (@args) = @_;
+  *STDERR->print("\e[31m@args\e[0m\n");
+  my $result = system(@args);
+  if ($result) {
+    *STDERR->print("\e[33m non-zero exit = $result\e[0m\n");
+    target_error;
+  }
+  target_success;
 }
-
 

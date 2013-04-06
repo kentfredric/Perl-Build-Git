@@ -69,6 +69,17 @@
       }
    },
    "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/kentfredric/Perl-Build-Git/issues"
+      },
+      "homepage" : "https://github.com/kentfredric/Perl-Build-Git",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/kentfredric/Perl-Build-Git.git",
+         "web" : "https://github.com/kentfredric/Perl-Build-Git"
+      }
+   },
    "version" : "0.001000",
    "x_BuiltWith" : {
       "modules" : {

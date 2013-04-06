@@ -206,7 +206,7 @@ B<path>. this should be a path to an existing C<perl> C<git> checkout.
 
 =item * C<persistent>
 
-B<C<bool>>. Whether to make the build directory persistent or not. Persistent directories can be optimistically re-used, while non-persistent ones can not.
+B<<C<bool>>>. Whether to make the build directory persistent or not. Persistent directories can be optimistically re-used, while non-persistent ones can not.
 
 Non Persistent directories also have a random component added to their path, and implied cleanup on exit.
 
@@ -214,7 +214,7 @@ Default is B<NOT PERSISTENT>
 
 =item * C<preclean>
 
-B<C<bool>>. Whether to execute a pre-build cleanup of the git working directory.
+B<<C<bool>>>. Whether to execute a pre-build cleanup of the git working directory.
 
 This at present executes a mash of C<git checkout>, C<git reset> and C<git clean>.
 
@@ -228,11 +228,11 @@ The default is B<NOT QUIET>
 
 =item * C<log_output>
 
-B<C<filehandle>>. Destination to write log messages to. Default is B<C<*STDERR>>
+B<<C<filehandle>>>. Destination to write log messages to. Default is B<<C<*STDERR>>>
 
 =item * C<log>
 
-B<C<coderef>>. Handles dispatch from logging mechanisms, in the form
+B<<C<coderef>>>. Handles dispatch from logging mechanisms, in the form
 
     $logger->( $color_spec , @message );
 
