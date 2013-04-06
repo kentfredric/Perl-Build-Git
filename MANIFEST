@@ -7,6 +7,7 @@ META.json
 META.yml
 README
 dist.ini
+example/bisect_set_object.pl
 lib/Perl/Build/Git.pm
 perlcritic.rc
 t/00-compile.t

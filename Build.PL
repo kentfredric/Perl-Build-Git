@@ -17,7 +17,7 @@ my %module_build_args = (
     "Kent Fredric <kentfredric\@gmail.com>"
   ],
   "dist_name" => "Perl-Build-Git",
-  "dist_version" => "0.1.0",
+  "dist_version" => "0.001000",
   "license" => "perl",
   "module_name" => "Perl::Build::Git",
   "recommends" => {},
@@ -28,8 +28,9 @@ my %module_build_args = (
     "Path::Tiny" => 0,
     "Perl::Build" => "0.17",
     "Perl::Build::Built" => 0,
+    "Term::ANSIColor" => 0,
     "parent" => 0,
-    "perl" => "v5.10.0",
+    "perl" => "5.006",
     "strict" => 0,
     "warnings" => 0
   },

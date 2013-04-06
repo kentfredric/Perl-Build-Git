@@ -19,18 +19,19 @@ name: Perl-Build-Git
 provides:
   Perl::Build::Git:
     file: lib/Perl/Build/Git.pm
-    version: v0.1.0
+    version: 0.001000
 requires:
   Carp: 0
   Git::Wrapper: 0
   Path::Tiny: 0
   Perl::Build: 0.17
   Perl::Build::Built: 0
+  Term::ANSIColor: 0
   parent: 0
-  perl: v5.10.0
+  perl: 5.006
   strict: 0
   warnings: 0
-version: 0.1.0
+version: 0.001000
 x_BuiltWith:
   modules:
     Carp: 1.28
@@ -44,6 +45,7 @@ x_BuiltWith:
     Perl::Build: 0.17
     Perl::Build::Built: 0.17
     Pod::Coverage::TrustPod: 0.100002
+    Term::ANSIColor: 4.02
     Test::CPAN::Meta: 0.22
     Test::More: 0.98
     Test::Pod: 1.46

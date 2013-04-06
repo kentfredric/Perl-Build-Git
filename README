@@ -3,14 +3,15 @@ NAME
     work
 
 VERSION
-    version 0.1.0
+    version 0.001000
 
 SYNOPSIS
     This is something that might be useful to call in a git bisect runner
 
         use Perl::Build::Git;
-        my $install = Perl::Build::Git->install_git( 
+        my $install = Perl::Build::Git->install_git(
                 persistent => 1,
+                preclean   => 1,
                 cache_root => '/tmp/perls/',
                 git_root   => '/path/to/git/checkout',
         );
