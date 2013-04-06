@@ -84,7 +84,7 @@ METHODS
 
     *   "preclean"
 
-        "bool". Wether to execute a pre-build cleanup of the git working
+        "bool". Whether to execute a pre-build cleanup of the git working
         directory.
 
         This at present executes a mash of "git checkout", "git reset" and

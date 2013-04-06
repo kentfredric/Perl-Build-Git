@@ -94,7 +94,7 @@ sub install_git {
   if ( $config->{success_file}->is_file ) {
 
     # Existing success!, don't build.
-    $config->{log}->( ['green'], "This version already built" );
+    $config->{log}->( ['green'], 'This version already built' );
     return Perl::Build::Built->new(
       {
         installed_path => $computed_args->{dst_path}
@@ -104,13 +104,13 @@ sub install_git {
 
   if ( $config->{preclean} ) {
     $config->{log}->( ['red'], 'Executing preclean' );
-    for my $line ( $config->{git}->checkout( '--', '.' ) ) {
+    for my $line ( $config->{git}->checkout( q[--], q[.] ) ) {
       $config->{log}->( ['green'], "checkout:$line" );
     }
-    for my $line ( $config->{git}->reset('--hard') ) {
+    for my $line ( $config->{git}->reset(q[--hard]) ) {
       $config->{log}->( ['green'], "reset:$line" );
     }
-    for my $line ( $config->{git}->clean('-fxd') ) {
+    for my $line ( $config->{git}->clean(q[-fxd]) ) {
       $config->{log}->( ['green'], "clean:$line" );
     }
   }
@@ -214,7 +214,7 @@ Default is B<NOT PERSISTENT>
 
 =item * C<preclean>
 
-B<C<bool>>. Wether to execute a pre-build cleanup of the git working directory.
+B<C<bool>>. Whether to execute a pre-build cleanup of the git working directory.
 
 This at present executes a mash of C<git checkout>, C<git reset> and C<git clean>.
 
