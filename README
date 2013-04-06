@@ -16,11 +16,11 @@ SYNOPSIS
                 preclean   => 1,
                 cache_root => '/tmp/perls/',
                 git_root   => '/path/to/git/checkout',
-                configure_options => [ 
+                configure_options => [
                     '-de',               # quiet automatic
                     '-Dusedevel',        # "yes, ok, its a development version"
                     @{$no_man_opts},     # man pages are ugly
-                    '-U versiononly',    # use bin/perl, not bin/perl5.17.1    
+                    '-U versiononly',    # use bin/perl, not bin/perl5.17.1
                 ],
         );
         $install->run_env(sub{

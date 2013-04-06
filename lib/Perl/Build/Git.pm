@@ -18,7 +18,7 @@ use Path::Tiny qw( path );
 use Carp qw( croak );
 
 
-sub perl_git_src_uri { 'git://perl5.git.perl.org/perl.git' }
+sub _perl_git_src_uri { 'git://perl5.git.perl.org/perl.git' }
 
 sub _extract_config {
   my ( $class, $args ) = @_;
@@ -152,11 +152,11 @@ This is something that might be useful to call in a git bisect runner
             preclean   => 1,
             cache_root => '/tmp/perls/',
             git_root   => '/path/to/git/checkout',
-            configure_options => [ 
+            configure_options => [
                 '-de',               # quiet automatic
                 '-Dusedevel',        # "yes, ok, its a development version"
                 @{$no_man_opts},     # man pages are ugly
-                '-U versiononly',    # use bin/perl, not bin/perl5.17.1    
+                '-U versiononly',    # use bin/perl, not bin/perl5.17.1
             ],
     );
     $install->run_env(sub{
@@ -237,9 +237,9 @@ B<coderef>. Handles dispatch from logging mechanisms, in the form
 
     $logger->( $color_spec , @message );
 
-where color_spec is anything that L<C<Term::ANSIColor::colored>|Term::ANSIColor::colored> understands. 
+where color_spec is anything that L<C<Term::ANSIColor::colored>|Term::ANSIColor::colored> understands.
 
-    $logger->( ['red'], "this", "is", "a" , "test" ); 
+    $logger->( ['red'], "this", "is", "a" , "test" );
 
 Default implementation writes to C<log_output> formatting C<@message> via C<Term::ANSIColor>.
 
