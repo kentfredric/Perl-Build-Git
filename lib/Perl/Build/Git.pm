@@ -237,7 +237,10 @@ The default is B<NOT QUIET>
 =item * C<log_output>
 
 B<< C<filehandle> >>.
-Destination to write log messages to. Default is B<< C<*STDERR> >>
+
+Destination to write log messages to.
+
+Default is B<< C<*STDERR> >>
 
 =item * C<log>
 

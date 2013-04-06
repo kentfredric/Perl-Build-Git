@@ -107,8 +107,11 @@ METHODS
 
     *   "log_output"
 
-        "filehandle". Destination to write log messages to. Default is
-        *STDERR
+        "filehandle".
+
+        Destination to write log messages to.
+
+        Default is *STDERR
 
     *   "log"
 
