@@ -222,13 +222,15 @@ Default is B<PRE-CLEAN GIT TREE>
 
 =item * C<quiet>
 
-B<< C<bool> >>. If specified, the default method for C<log> is a no-op.
+B<< C<bool> >>. 
+If specified, the default method for C<log> is a no-op.
 
 The default is B<NOT QUIET>
 
 =item * C<log_output>
 
-B<< C<filehandle> >>. Destination to write log messages to. Default is B<< C<*STDERR> >>
+B<< C<filehandle> >>. 
+Destination to write log messages to. Default is B<< C<*STDERR> >>
 
 =item * C<log>
 
