@@ -218,7 +218,7 @@ B<C<bool>>. Whether to execute a pre-build cleanup of the git working directory.
 
 This at present executes a mash of C<git checkout>, C<git reset> and C<git clean>.
 
-Default is B<PRECLEAN GIT TREE>
+Default is B<PRE-CLEAN GIT TREE>
 
 =item * C<quiet>
 
@@ -228,11 +228,11 @@ The default is B<NOT QUIET>
 
 =item * C<log_output>
 
-B<filehandle>. Destination to write log messages to. Default is B<C<*STDERR>>
+B<C<filehandle>>. Destination to write log messages to. Default is B<C<*STDERR>>
 
 =item * C<log>
 
-B<coderef>. Handles dispatch from logging mechanisms, in the form
+B<C<coderef>>. Handles dispatch from logging mechanisms, in the form
 
     $logger->( $color_spec , @message );
 
