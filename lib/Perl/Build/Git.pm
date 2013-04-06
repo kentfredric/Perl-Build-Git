@@ -206,7 +206,7 @@ B<path>. this should be a path to an existing C<perl> C<git> checkout.
 
 =item * C<persistent>
 
-B<C<bool>>. Whether to make the build directory persistent or not. Persistent directories can be optimistialy re-used, while non-persistent ones can not.
+B<C<bool>>. Whether to make the build directory persistent or not. Persistent directories can be optimisticaly re-used, while non-persistent ones can not.
 
 Non Persistent directories also have a random component added to their path, and implied cleanup on exit.
 
