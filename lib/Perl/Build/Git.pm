@@ -80,6 +80,8 @@ sub _extract_config {
   return ( $config, $args );
 }
 
+
+
 sub install_git {
   my ( $class, %args ) = @_;
 
@@ -143,11 +145,19 @@ version 0.001000
 This is something that might be useful to call in a git bisect runner
 
     use Perl::Build::Git;
+    my $man         = [qw( man1dir man3dir siteman1dir siteman3dir  )];
+    my $no_man_opts = [ map { '-D' . $_ . '=none' } @{$man} ];
     my $install = Perl::Build::Git->install_git(
             persistent => 1,
             preclean   => 1,
             cache_root => '/tmp/perls/',
             git_root   => '/path/to/git/checkout',
+            configure_options => [ 
+                '-de',               # quiet automatic
+                '-Dusedevel',        # "yes, ok, its a development version"
+                @{$no_man_opts},     # man pages are ugly
+                '-U versiononly',    # use bin/perl, not bin/perl5.17.1    
+            ],
     );
     $install->run_env(sub{
             # Test Case Here
@@ -160,6 +170,80 @@ C<persistent = 1>  is intended to give each build its own unique directory, such
     /tmp/perls/v5.17.10-44-g97927b0/
 
 So that if you do multiple bisects, ( for the purpose of testing which incarnation of perl some module fails in ), testing against a perl that was previously tested against in a previous bisect should return a cached result, greatly speeding up the bisect ( at the expense of disk space ).
+
+=head1 METHODS
+
+=head2 install_git
+
+    Perl::Build::Git->install_git(
+        cache_root => '/some/path',
+        git_root   => '/some/path/to/perl/git',
+        persistent => bool,
+        preclean   => bool,
+        quiet      => bool,
+        log_output => filehandle,
+        log        => coderef,
+    );
+
+=over 4
+
+=item * C<cache_root>
+
+B<path>. This should be a path to an existent base working directory to install multiple perl installs to
+
+Perl builds will either be in the form of
+
+    <cacheroot>/<tag>-g<sha1abbrev>
+
+or
+
+    <cacheroot>/<tag>-g<sha1abbrev>-<SUFFIX>
+
+depending on C<persistent>
+
+=item * C<git_root>
+
+B<path>. this should be a path to an existing C<perl> C<git> checkout.
+
+=item * C<persistent>
+
+B<bool>. Wether to make the build directory persistent or not. Persistent directories can be optimistially re-used, while non-persistent ones can not.
+
+Non Persistent directories also have a random component added to their path, and implied cleanup on exit.
+
+Default is B<NOT PERSISTENT>
+
+=item * C<preclean>
+
+B<bool>. Wether to execute a pre-build cleanup of the git working directory.
+
+This at present executes a mash of C<git checkout>, C<git reset> and C<git clean>.
+
+Default is B<PRECLEAN GIT TREE>
+
+=item * C<quiet>
+
+B<bool>. If specified, the default method for C<log> is a no-op.
+
+The default is B<NOT QUIET>
+
+=item * C<log_output>
+
+B<filehandle>. Destination to write log messages to. Default is B<C<*STDERR>>
+
+=item * C<log>
+
+B<coderef>. Handles dispatch from logging mechanisms, in the form
+
+    $logger->( $color_spec , @message );
+
+where color_spec is anything that L<C<Term::ANSIColor::colored>|Term::ANSIColor::colored> understands. 
+
+    $logger->( ['red'], "this", "is", "a" , "test" ); 
+
+Default implementation writes to C<log_output> formatting C<@message> via C<Term::ANSIColor>.
+
+=back 4
 
 =head1 AUTHOR
 
